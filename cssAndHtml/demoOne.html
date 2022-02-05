@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+     html {
+        box-sizing: border-box;
+        font-size: 62.5%;
+        scroll-behavior: smooth;
+     }
+     * {
+         margin: 0;
+         padding: 0;
+     }
+     #navbar {
+         display: flex;
+         justify-content: flex-end;
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         background-color: azure;
+         z-index: 10;
+     }
+     #welcome-section {
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       width: 100%;
+       height: 100vh; /* full window */
+       background-color: aquamarine;
+     }
+     h1, h2 {
+        font-size: 6rem;
+        font-family: 'Raleway', sans-serif;
+        font-weight: 700;
+        text-align: center;
+     }
+     #welcome-section > p {
+        font-size: 3rem;
+        font-weight: 200;
+        font-style: italic;
+     }
+     ul {
+         list-style: none; /* to earse the dot in front of li elem*/
+     }
+     .nav-list {
+         display: flex;
+         margin-right: 2rem;
+     }
+     .nav-list a {
+         display: block;
+         font-size: 2.2rem;
+         padding: 2rem;
+     }
+     a {
+         text-decoration: none;
+         color: black;
+     }
+     #projects {
+        text-align: center;
+        padding: 10rem 2rem;
+        background: var(--main-blue);
+     }
+     .projects-grid {
+         display: grid;
+         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+         grid-gap: 4rem;
+         width: 100%;
+         max-width: 1280px;
+         margin: 0 auto;
+         margin-bottom: 6rem;
+     }
+     .project-image {
+        width: 100%;
+        object-fit: cover;
+     }
+     .project-title {
+        background-color:beige;
+        font-size: 2rem;
+        padding: 2rem 0.5rem
+     }
+     .projects-section-header {
+        margin: 0 auto 6rem auto;
+     }
+    </style>
+  </head>
+  <body>
+   <section id="welcome-section">
+     <h1 style="color: black;">Hey I am Linaki</h1>
+     <p style="color: darkblue;">a java backend developer</p>
+   </section> 
+   <section id="projects">
+       <h2 class="projects-section-header">These are some of my projects</h2>
+       <div class="projects-grid">
+           <a href="#" class="project-tile">
+               <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project">
+               <p class="project-title">
+                   <span class="code"><</span>
+                    Tribute Page
+                   <span class="code">></span>
+               </p>
+           </a>
+           <a href="#" class="project-tile">
+               <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project">
+               <p class="project-title">
+                   <span class="code"><</span>
+                    Tribute Page
+                   <span class="code">></span>
+               </p>
+           </a>
+           <a href="#" class="project-tile">
+               <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project">
+               <p class="project-title">
+                   <span class="code"><</span>
+                    Tribute Page
+                   <span class="code">></span>
+               </p>
+           </a>
+           <a href="#" class="project-tile">
+               <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project">
+               <p class="project-title">
+                   <span class="code"><</span>
+                    Tribute Page
+                   <span class="code">></span>
+               </p>
+           </a>
+           <a href="#" class="project-tile">
+               <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project">
+               <p class="project-title">
+                   <span class="code"><</span>
+                    Tribute Page
+                   <span class="code">></span>
+               </p>
+           </a>
+           <a href="#" class="project-tile">
+               <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project">
+               <p class="project-title">
+                   <span class="code"><</span>
+                    Tribute Page
+                   <span class="code">></span>
+               </p>
+           </a>
+       </div>
+   </section>
+   <nav id="navbar">
+       <ul class="nav-list">
+           <li>
+                <a href="#welcome-section">About</a>
+           </li>
+           <li>
+                <a href="#projects">Work</a>
+           </li>
+           <li>
+                <a href="#profile-link">Contact</a>
+           </li>
+       </ul>
+   </nav>
+   <section id="contact" class="contact-section">
+
+   </section>
+  </body>
+</html>
