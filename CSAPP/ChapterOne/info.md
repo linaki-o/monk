@@ -1,12 +1,12 @@
 # A Tour of Computer Systems
 ## Informations is Bits + Context
-> Programs are translated by other programs into different forms
+ Programs are translated by other programs into different forms
 
 <img src="img/processOfTranslate.png">
 
 the translation from source file to object file on a Unix system
 
-> It Pays to Understand How Compilation Systems Work
+## It Pays to Understand How Compilation Systems Work
 
 The reasons why programmers need to understand how compilation systems work:
 - Optimizing program performance
@@ -23,13 +23,13 @@ The reasons why programmers need to understand how compilation systems work:
     - Why does it matter what order we list libraries on the command line? And scariest of all,
     - why do some linker-related errors not appear until run time?
 - Avoiding security holes
-> Processors Read and Interpret Instructions Stored in Memory
+## Processors Read and Interpret Instructions Stored in Memory
 
 **The shell is a command-line interpreter that prints a prompt, waits for you to type a command line, and then performs the command**. If the first word of the command line does not correspond to a built-in shell command, then the shell assumes that it is the name of an executable file that it should load and run. When the program terminates, The shell then prints a prompt and waits for the next input command line
 
 <img src="img/hardwareOrganization.png">
 
-**Bus:**
+>Bus:
 
 Running throughout the system is a collection of electrical conduits called buses
 that carry bytes of information back and forth between the components. Buses
@@ -37,25 +37,26 @@ are typically designed to transfer fixed-size chunks of bytes known as words
 
 ----------
 
-**I/O Devices:**
+> I/O Devices:
 
 Each I/O device is connected to the I/O bus by either a controller or an adapter
 - Controllers are chip sets in the device itself or on the system’s main printed circuit board (often called the motherboard). 
 - An adapter is a card that plugs into a slot on the motherboard
 
 ------
-**Main Memory**
+> Main Memory
 
 Physically, main memory consists of a collection of dynamic random access memory (DRAM) chips
 
 ------
-**Processor**
+> Processor
 
 A processor appears to operate according to a very simple instruction execution
 model, defined by itsinstruction set architecture
 
 -------
-**Running the hello Program**
+> Running the hello Program
+
 <img src="img/hello1.png">
 As we type the characters ./hello at the keyboard, the shell program
 reads each one into a register and then stores it in memory
@@ -66,7 +67,7 @@ the processor
 These instructions copy the bytes in the hello, world\n
 string from memory to the register file, and from there to the display device, where
 they are displayed on the screen
-> Cache
+## Cache
 
 <img src="img/cache.png">
 
@@ -82,25 +83,23 @@ There are two kinds of cache. An L1 cache on the processor chip holds tens of th
 The L1 and L2 caches are
 implemented with a hardware technology known as static random access memory
 (SRAM)
-> Storage Devices Form a Hierarchy
+##  Storage Devices Form a Hierarchy
 
 <img src="img/hierarchy.png">
 
 The main idea of a memory hierarchy is that storage at one level serves as a
 cache for storage at the next lower level
-> The Operating System Manages the Hardware
+## The Operating System Manages the Hardware
 
 <img src="img/os1.png">
 
-**Processes:**
+> Processes:
 
 A **process** is the operating system’s abstraction for a running program
 
 By **concurrently**, we mean that the instructions of one process are interleaved with the instructions of another process. In most systems, there are more processes to run than there are CPUs to run them
 
-Traditional systems could only execute one program at a time, while newer multicore processors can execute several programs simultaneously. In either case, a
-single CPU can appear to execute multiple processes concurrently by having the
-processor switch among them
+Traditional systems could only execute one program at a time, while newer multicore processors can execute several programs simultaneously. In either case, a single CPU can appear to execute multiple processes concurrently by having the processor switch among them
 
 **The operating system performs this interleaving with a mechanism known as context switching**
 
@@ -115,7 +114,7 @@ needs in order to run. This state, which is known as the context, includes infor
 of code and data structures that the system uses to manage all the processes
 
 ------
-**Threads**
+> Threads
 
 Although we normally think of a process as having a single control flow, in modern
 systems a process can actually consist of multiple execution units, called **threads**,**each running in the context of the process and sharing the same code and global data**
@@ -126,7 +125,7 @@ Threads are an increasingly important programming model, because:
 - threads are typically more efficient than processes
 - Multi-threading is also one way to make programs run faster when multiple processors are available
 -------
-**Virtual Memory**
+> Virtual Memory
 
 **Virtual memory is an abstraction that provides each process with the illusion that it
 has exclusive use of the main memory**. 
@@ -155,15 +154,48 @@ The virtual address space seen by each process consists of a number of well defi
 **For virtual memory to work, the basic idea is to store the contents of a process’s virtual memory on disk and then use the main memory as a cache for the disk**
 
 ---
-**Files**
+> Files
 
 **A file is a sequence of bytes, nothing more and nothing less.** Every I/O device, including disks, keyboards, displays, and even networks, is modeled as a file. All input and output in the system is performed by reading and writing files, using a small set of system calls known as Unix I/O.
 
 **This simple and elegant notion of a file is nonetheless very powerful because it provides applications with a uniform view of all the varied I/O devices that might be contained in the system.**
 
-> Systems Communicate with Other Systems Using Networks
+## Systems Communicate with Other Systems Using Networks
 
 **From the point of view of an individual system, the network can be viewed as just another I/O device**
 
 Using telnet to run hello remotely over a network.
 <img src="img/telnet.png">
+
+##  Important Themes
+
+> Amdahl’s Law:
+
+- Consider a system in which executing some application requires time **Told**
+
+- Suppose some part of the system requires a fraction **α** of this time
+- we improve its performance by a factor of **k**
+- That is, the component originally required time **αTold**, and it now requires time **(αTold)/k**
+- The overall execution time would thus be **Tnew = (1 − α)Told + (αTold)/k = Told[(1 − α) + α/k]**
+-  we can compute the speedup **S = Told/Tnew** as
+
+    <img src="img/formula.png">
+
+- consider the effect of setting k to ∞.
+
+    <img src="img/infinite.png">
+
+
+There are some inspiration from Amdahl's Law:
+
+**To significantly speed up the entire system, we must improve the speed of a very large fraction of the overall system**
+
+------
+> Concurrency and Parallelism:
+
+----
+> The Importance of Abstractions in Computer Systems:
+
+The use of abstractions is one of the most important concepts in computer science. For example, one aspect of good programming practice is to formulate a simple application program interface (API) for a set of functions that allow programmers to use the code without having to delve into its inner workings
+
+<img src="img/abstractions.png">

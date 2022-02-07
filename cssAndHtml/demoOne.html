@@ -11,25 +11,6 @@
          margin: 0;
          padding: 0;
      }
-     #navbar {
-         display: flex;
-         justify-content: flex-end;
-         position: fixed;
-         top: 0;
-         left: 0;
-         width: 100%;
-         background-color: azure;
-         z-index: 10;
-     }
-     #welcome-section {
-       display: flex;
-       flex-direction: column;
-       justify-content: center;
-       align-items: center;
-       width: 100%;
-       height: 100vh; /* full window */
-       background-color: rgba(127, 255, 212,0.7);
-     }
      h1, h2 {
         font-family: 'Raleway', sans-serif;
         font-weight: 700;
@@ -38,15 +19,33 @@
      h1 {
         font-size: 6rem;
         }
-     #welcome-section > p {
-        font-size: 3rem;
-        font-weight: 200;
-        font-style: italic;
+     a {
+         text-decoration: none;
+         color: black;
      }
      ul {
          list-style: none; /* to earse the dot in front of li elem*/
      }
-     .nav-list {
+     h2 {
+         font-size: 4.3rem;
+     }
+    .btn {
+        display: inline-block;
+        padding: 1rem 2rem;
+        border-radius: 2px;
+    }
+     #navbar {
+         display: flex;
+         justify-content: flex-end;
+         position: fixed;
+         top: 0;
+         left: 0;
+         width: 100%;
+         background-color: rgba(127, 255, 212,0.7);
+         box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+         z-index: 10;
+     }
+    .nav-list {
          display: flex;
          margin-right: 2rem;
      }
@@ -55,14 +54,36 @@
          font-size: 2.2rem;
          padding: 2rem;
      }
-     a {
-         text-decoration: none;
-         color: black;
+     #welcome-section {
+       display: flex;
+       flex-direction: column;
+       justify-content: center;
+       align-items: center;
+       width: 100%;
+       height: 100vh; /* full window */
+       background-color: azure;
      }
+     
+     #welcome-section > p {
+        font-size: 3rem;
+        font-weight: 200;
+        font-style: italic;
+     }
+     
+     
+     
      #projects {
         text-align: center;
         padding: 10rem 2rem;
-        background-color: rgba(245, 197, 227,0.8) 
+        background-color: rgba(194, 209, 214, 0.562) 
+     }
+     .projects-section-header {
+        margin: 0 auto 6rem auto;
+        border-bottom: 0.2rem solid black;
+        width: 640px;
+     }
+     #projects > h2 {
+         font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
      }
      .projects-grid {
          display: grid;
@@ -73,26 +94,29 @@
          margin: 0 auto;
          margin-bottom: 6rem;
      }
+     .projects-grid > a {
+         border-radius: 10%;
+     }
      .project-image {
         width: 100%;
         object-fit: cover;
      }
      .project-title {
-        background-color:beige;
+        background-color: lightcyan;
         font-size: 2rem;
         padding: 2rem 0.5rem
      }
-     .projects-section-header {
-        margin: 0 auto 6rem auto;
-        border-bottom: 0.2rem solid black;
-        width: 640px;
-     }
-     h2 {
-         font-size: 4.3rem;
-     }
+    .btn-show-all {
+        font-size: 2rem;
+        background-color: lightblue;
+    }
      .fa-chevron-right:before {
     content: "\f054";
     }
+
+
+
+
     .contact-section {
         display: flex;
         flex-direction: column;
@@ -104,6 +128,7 @@
         background-color: rgba(241, 229, 212,0.85);
     }
     .contact-links {
+        text-decoration: underline;
         display: flex;
         justify-content: center;
         width: 100%;
@@ -111,19 +136,11 @@
         margin-top: 4rem;
         flex-wrap: wrap;
     }
-    .btn {
-        display: inline-block;
-        padding: 1rem 2rem;
-        border-radius: 2px;
-    }
-    .btn-show-all {
-        font-size: 2rem;
-        background-color: lightcyan;
-        transition: background 0.3s ease-out;
-    }
    .contact-section-header > p {
         font-style: italic;
         text-align: center;
+        font-size: 2.8rem;
+        margin-top: 10px;
 
     } 
     </style>
