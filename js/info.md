@@ -21,3 +21,23 @@ myStr = "Job";
 > Scope
 
 - Variables not declared with the let or const keywords are automatically created in the **global** scope
+-------
+> if-else-if
+-----
+> switch
+----
+> undefined
+----
+> Object
+
+create
+
+访问对象属性的第二种方式是方括号表示法（[]）。 如果你想访问的属性名中包含空格，就必须使用方括号表示法来获取它的属性值。
+
+delete ourDog.bark;
+
+
+.hasOwnProperty()
+
+
+if();
