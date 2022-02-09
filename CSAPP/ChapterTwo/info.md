@@ -54,3 +54,60 @@ Some machines choose to store the object in memory ordered **from least signific
     ```
     4004d3: 01 05 43 0b 20 00   |   add %eax,0x200b4 (%rip)
     ```
+- when programs are written that circumvent the normal type system.
+    ```
+    when programs are written that circumvent the normal type system.
+    ```
+> Representing Strings
+
+`The base encoding, known as the “Universal Character Set” of Unicode, uses a 32-bit representation of characters`
+
+`In particular, the UTF-8 representation encodes each character as a sequence of bytes, such that the standard ASCII characters use the same single-byte encodings as they have in ASCII, implying that all ASCII byte sequences have the same meaning in UTF-8 as they do in ASCII.`
+> Introduction to Boolean Algebra
+
+One useful application of bit vectors is to **represent finite sets** like
+```
+bit vector a = [01101001]encodes the set A = {0, 3, 5, 6}
+
+With this way of encoding sets, Boolean operations | and & correspond to set union and intersection, respectively, and ~ corresponds to set complement
+```
+and the **bit-vector mask** is another useful way
+
+
+`little practice:`
+```c
+/* bis and bic generate a result z consisting of the bits of x modified according to the bits of m
+
+With bis, the modification involves setting z to 1 at each bit position where m is 1. With bic, the modification involves setting
+z to 0 at each bit position where m is 1
+*/
+int bis(int x,int m) {
+        return x | m;
+}
+int bic(int x,int m) {
+        return x &~ m;
+}
+int bool_xor(int x, int y) {
+        int result = bis(bic(x, y), bic(x,y));
+        return result;
+}
+int main(void) {
+        int a = bool_xor(3,3);
+        int b = bool_xor(3,0);
+        printf("a = %d, b = %d\n", a, b);
+        return 0;
+}
+```
+> Logical Operations in C
+
+The logical operations treat any nonzero argument as representing true and argument 0 as representing false. They return either 1 or 0, indicating a result of either true or false,
+> Shift Operations in C
+- x << k(**filling the right end with k zeros**)
+- two forms of right shift
+    - Logical(**fills the left end with k zeros**)
+    - Arithmetic(**fills the left end with k repetitions of the
+most significant bit**)
+
+    The C standards do not precisely define which type of right shift should be used with signed numbers.
+
+    In practice, however, almost all compiler/machine combinations use **arithmetic** right shifts for **signed data**, and many programmers assume this to be the case. For **unsigned** data, on the other hand, right shifts must be **logical**.

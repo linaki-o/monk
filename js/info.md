@@ -22,22 +22,47 @@ myStr = "Job";
 
 - Variables not declared with the let or const keywords are automatically created in the **global** scope
 -------
-> if-else-if
------
 > switch
+```js
+function test(x) {
+    switch (x) {
+        case 1: console.log(1);break;
+        case '2': console.log(2);break;
+        case "3": console.log(3);break; // There is no char in js, so u can use "" in switch.
+    }
+}
+```
 ----
 > undefined
+
+**undefined** is a keyword instead a string
+
 ----
 > Object
 
-create
+- Object.create(proto, [propertiesObject])
+    - another way
+        ```js
+        // new Object() 
+        var a = {  rep : 'apple' }
+        var b = new Object(a)
+        console.log(b) // {rep: "apple"}
+        console.log(b.__proto__) // {}
+        console.log(b.rep) // {rep: "apple"}
 
-访问对象属性的第二种方式是方括号表示法（[]）。 如果你想访问的属性名中包含空格，就必须使用方括号表示法来获取它的属性值。
+        // Object.create() 
+        var a = { rep: 'apple' }
+        var b = Object.create(a)
+        console.log(b)  // {}
+        console.log(b.__proto__) // {rep: "apple"}
+        console.log(b.rep) // {rep: "apple"}
+        ```
+    - Different property:
+        <img src="img/dp.png">
 
-delete ourDog.bark;
+- The second way to access **object properties** is the square bracket representation **([])**. If the property name you want to access contains spaces, you must use the square bracket representation to get its property value.
+
+- delete Object.property;
 
 
-.hasOwnProperty()
-
-
-if();
+- Object.hasOwnProperty()
