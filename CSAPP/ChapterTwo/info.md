@@ -111,3 +111,27 @@ most significant bit**)
     The C standards do not precisely define which type of right shift should be used with signed numbers.
 
     In practice, however, almost all compiler/machine combinations use **arithmetic** right shifts for **signed data**, and many programmers assume this to be the case. For **unsigned** data, on the other hand, right shifts must be **logical**.
+
+
+**Shifting by k, for large values of k:**
+```c
+For a data type consisting of w bits, what should be the effect of shifting by some value k ≥ w?
+
+On many machines, the shift instructions consider only the lower log2 w bits of the shift amount when shifting a w-bit value, and so the shift amount is computed as k mod w.
+
+//This behavior is not guaranteed for C programs, however, and so shift amounts should be kept less than the word size
+```
+
+**1<<2 + 3<<4 ==  1 << (2+3) << 4** since addition (and subtraction) have higher precedence than shifts
+
+
+## Integer Representations
+
+> Integral Data Types
+- Typical ranges for C integral data types for 32-bit programs.
+    <img src="img/32b.png">
+- Typical ranges for C integral data types for 64-bit programs.
+    <img src="img/64b.png">
+- Guaranteed ranges for C integral data types.
+    <img src="img/c.png">
+<font color="red">p99</font>
