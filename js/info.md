@@ -66,3 +66,10 @@ function test(x) {
 
 
 - Object.hasOwnProperty()
+
+Math.floor(Math.random() * 20);
+
+
+const a = parseInt("007");
+
+const a = parseInt("11", 2);

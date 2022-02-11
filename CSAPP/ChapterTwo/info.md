@@ -134,4 +134,38 @@ On many machines, the shift instructions consider only the lower log2 w bits of 
     <img src="img/64b.png">
 - Guaranteed ranges for C integral data types.
     <img src="img/c.png">
-<font color="red">p99</font>
+> Unsigned Encodings
+
+
+<img src="img/b2u.png">
+The function B2Uw maps strings of zeros and ones
+of length w to nonnegative integers
+
+**B2Uw is a bijection, meaning The function B2Uw
+maps each bit vector of length w to a unique number between 0 and 2w − 1**
+
+> Two’s-Complement Encodings
+
+<img src="img/b2t.png">
+
+**Function B2Tw is a bijection too**
+
+`The file <limits.h> in the C library defines a set of constants delimiting the ranges of the different integer data types for the particular machine on which the compiler is running.`
+
+> Conversions between Signed and Unsigned
+
+**the effect of casting is to keep the bit values identical but change how these bits are interpreted**
+
+<img src="img/t2u.png">
+
+---------
+<img src="img/t2ud.png">
+
+-----------
+<img src="img/u2td.png">
+
+> Signed versus Unsigned in C
+
+**Generally, most numbers are signed by default Adding character ‘U’ or ‘u’ as a suffix creates an unsigned constant; for example, 12345U or 0x1A2Bu.**
+
+**When an operation is performed where one operand is signed and the other is unsigned, Cimplicitly casts the signed argument to unsigned and performs the operations assuming the numbers are nonnegative**
