@@ -169,3 +169,14 @@ maps each bit vector of length w to a unique number between 0 and 2w − 1**
 **Generally, most numbers are signed by default Adding character ‘U’ or ‘u’ as a suffix creates an unsigned constant; for example, 12345U or 0x1A2Bu.**
 
 **When an operation is performed where one operand is signed and the other is unsigned, Cimplicitly casts the signed argument to unsigned and performs the operations assuming the numbers are nonnegative**
+
+> Expanding the Bit Representation of a Number
+
+`In limits.h `
+```c
+/* Minimum and maximum values a ‘signed int’ can hold. */
+#define INT_MAX 2147483647
+#define INT_MIN (-INT_MAX - 1)
+```
+
+p113

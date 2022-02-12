@@ -67,9 +67,10 @@ function test(x) {
 
 - Object.hasOwnProperty()
 
-Math.floor(Math.random() * 20);
+>  Math
+- Math.floor(Math.random() * 20);
 
+> function
 
-const a = parseInt("007");
-
-const a = parseInt("11", 2);
+- const a = parseInt("007"); String to Int
+- const a = parseInt("11", 2); String representing a binary number to Int 
