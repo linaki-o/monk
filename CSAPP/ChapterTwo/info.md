@@ -178,5 +178,25 @@ maps each bit vector of length w to a unique number between 0 and 2w − 1**
 #define INT_MAX 2147483647
 #define INT_MIN (-INT_MAX - 1)
 ```
+**zero extension**(Unsigned):
+```
+To convert an unsigned number to a larger data type, we can simply add leading zeros to the representation
+```
 
-p113
+**sign extension**(Two's-complement):
+```
+For converting a two’s-complement number to a larger data type, the rule is adding copies of the most significant bit to the representation
+```
+
+**Conversion problem**:
+```c
+short sx = -12345; /* -12345 */
+unsigned uy = sx; /* Mystery! */
+printf("uy = %u:\t", uy);
+show_bytes((byte_pointer) &uy, sizeof(unsigned));
+// ===========result==========
+uy = 4294954951: ff ff cf c7
+// That is, (unsigned) sx is equivalent to (unsigned) (int) sx
+// Indeed, this convention is required by the C standards
+```
+p117
