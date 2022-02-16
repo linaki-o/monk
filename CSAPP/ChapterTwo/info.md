@@ -199,4 +199,47 @@ uy = 4294954951: ff ff cf c7
 // That is, (unsigned) sx is equivalent to (unsigned) (int) sx
 // Indeed, this convention is required by the C standards
 ```
-p117
+> Truncating Numbers
+
+In bit-level, you can just cut off the excess bits to truncate numbers.
+
+the discussion below is for decimal.
+
+------
+x': result 
+
+x: unsigned number
+
+**unsigned number**: x' = x mod 2^k
+
+**two’s-complement**: x' = U2Tk(x mod 2^k)
+
+> Advice on Signed versus Unsigned
+
+```c
+/* Prototype for library function strlen */
+size_t strlen(const char *s);
+Here is your first attempt at the function:
+/* Determine whether string s is longer than string t */
+/* WARNING: This function is buggy */
+int strlonger(char *s, char *t) {
+return strlen(s) - strlen(t) > 0;
+}
+/* 
+answer: return strlen(s) > strlen(t);
+we need to pay attention on operation may involved conversion between unsigned and two's-complement
+*/
+```
+
+## Integer Arithmetic
+> Unsigned Addition
+
+**When the sum overflows, we just truncate number by implementing modular arithmetic.**
+
+- Detecting overflow of unsigned addition
+```
+For x and y in the range 0 ≤ x,y ≤ UMaxw, let s = x + y. Then the computation of s overflowed if and only if s<x (or equivalently, s<y)
+```
+p125
+
+
