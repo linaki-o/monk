@@ -237,9 +237,25 @@ we need to pay attention on operation may involved conversion between unsigned a
 **When the sum overflows, we just truncate number by implementing modular arithmetic.**
 
 - Detecting overflow of unsigned addition
-```
-For x and y in the range 0 ≤ x,y ≤ UMaxw, let s = x + y. Then the computation of s overflowed if and only if s<x (or equivalently, s<y)
-```
-p125
+    ```
+    For x and y in the range 0 ≤ x,y ≤ UMaxw, let s = x + y. Then the computation of s overflowed if and only if s<x (or equivalently, s<y)
+    ```
+- Unsigned negation
 
+    <img src="img/uneg.png">
 
+> Two’s-Complement Addition
+
+- Two’s-complement addition
+
+    <img src="img/toverf.png">
+    <img src="img/good.png">
+
+- Detecting overflow in two’s-complement addition
+    ```
+    let s = x + y. Then the computation of s has had positive overflow if and only if x > 0 and y > 0 but s ≤ 0. The computation has had negative overflow if and only if x < 0 and y < 0 but s ≥ 0.
+
+> Two’s-Complement Negation
+
+<img src="img/tneg.png">
+p131
