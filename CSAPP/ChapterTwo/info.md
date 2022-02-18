@@ -258,4 +258,21 @@ we need to pay attention on operation may involved conversion between unsigned a
 > Two’s-Complement Negation
 
 <img src="img/tneg.png">
-p131
+
+------
+Bit-level representation of two’s-complement negation:
+- -x = ~x +1
+    <img src="img/-x.png">
+- Let k be the position of the rightmost 1, so the bit-level representation of x has the
+form [xw−1, xw−2,...,xk+1, 1, 0,... 0]. (This is possible as long as x != 0.) The negation is then written in binary form as [~xw−1, ~xw−2,... ~ xk+1, 1, 0,..., 0].
+    <img src="img/-x2.png">
+
+> Unsigned Multiplication
+
+<img src="img/um.png">
+
+> Two’s-Complement Multiplication
+
+<img src="img/tm.png">
+
+p135
