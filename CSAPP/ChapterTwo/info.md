@@ -275,4 +275,41 @@ form [xw−1, xw−2,...,xk+1, 1, 0,... 0]. (This is possible as long as x != 0.
 
 <img src="img/tm.png">
 
-p135
+> Multiplying by Constants
+
+Historically, the integer multiply instruction on many machines was fairly slow, requiring 10 or more clock cycles, whereas other integer operations—such as addition, subtraction, bit-level operations, and shifting—required only 1 clock cycle
+
+
+As a consequence, one important optimization used by compilers is to attempt to replace multiplications by constant factors with combinations of shift and addition operations
+
+- Unsigned multiplication by a power of 2
+    <img src="img/upower2.png">
+- Two’s-complement multiplication by a power of 2
+    <img src="img/tpower2.png">
+----
+
+consider x * K
+
+K's bit-level representation is 
+
+**[(0 ... 0) (1 ... 1) (0 ... 0) ... (1 ... 1)]**
+
+Consider a run of ones from bit position n down to bit position m (n ≥ m).
+
+then x * K  = 
+
+<img src="img/A&B.png">
+
+these can be highly machine dependent. Most compilers only perform this optimization when a small number of shifts, adds, and subtractions suffice
+
+Assuming that addition and subtraction have the same performance, the rule is to choose form A when n = m, either form when n = m + 1, and form B when n>m + 1.
+
+>  Dividing by Powers of 2
+
+Integer division on most machines is even slower than integer multiplication— requiring 30 or more clock cycles
+
+**Integer division always rounds toward zero**
+
+**Right shift always rounds down**
+
+By adding a bias before the right shift, the negative result is rounded toward zero

@@ -272,7 +272,7 @@ int main() {
 
 # destructors
 ```cpp
-~Object::Object(){}
+Object::~Object(){}
 // don't have parameters and return values
 ```
 destuctors don't release memory, they just do something before the memory be released.
@@ -303,3 +303,246 @@ int main() {
     return 0;
 }
 ```
+
+# This
+```cpp
+class Complex {
+    public:
+        double real, imag;
+        Complex(double real, double imag) {
+            this->real = real;
+            this->imag = imag;
+        }
+};
+```
+confusion:
+```cpp
+class A {
+    int t;
+    public:
+        void Hello() {
+            cout << "hello" << endl;
+        }
+};
+int main() {
+    A *p = NULL;
+    p->Hello();
+}
+//=========complie to c
+struct A {
+    int t;
+};
+void Hello(A *this) {
+    cout << "hello" << endl;
+}
+int main() {
+    A *p = NULL;
+    Hello(p);
+}
+```
+# Static
+
+```cpp
+class CRectangle {
+    private:
+        int w, h;
+        static int nTotalArea;
+        static int nTotalNumber;
+    public:
+        CRectangle(int w_, int h_);
+        ~CRectangle();
+        CRectangle(CRectangle &r);
+        static void PrintToal();
+};
+CRectangle::CRectangle(int w_, int h_) {
+    w = w_;
+    h = h_;
+    nTotalNumber++;
+    nTotalArea += w * h;
+}
+CRectangle::~CRectangle() {
+    nTotalNumber--;
+    nTotalArea -= w * h;
+}
+CRectangle::CRectangle(CRectangle &r) {
+    w = r.w;
+    h = r.h;
+    nTotalNumber++;
+    nTotalArea += w * h;
+}
+void CRectangle::PrintTotal() {
+    cout << nTotalNumber << " " << nTotalArea << endl;
+}
+
+int CRectangle::nTotalArea = 0;
+int CRectangle::nTotalNumber= 0;
+```
+static member datas belong to class, so "sizeof" doesn't count them on.
+
+access:
+```cpp
+CRectangle::PrintTotal();
+CRectangle r; r.PrintTotal();
+CRectangle *p = &r; p->PrintTotal();
+CRectangle &ref = r; int n = ref.nTotalNumber; 
+```
+# Enclosing Class
+
+a class whose member data is other class object;
+```cpp 
+class CTyre {
+    private:
+        int radius;
+        int width;
+    public:
+        CTyre(int r, int w):radius(r), width(w) { }
+};
+class CEngine {
+
+};
+class CCar { // enclosing class
+    private:
+        int price;
+        CTyre tyre;
+        CEngine engine;
+    public:
+        CCar(int p, int tr, int tw);
+};
+CCar::CCar(int p, int tr, int w):price(p), tyre(tr, w){ }
+int main(void) {
+    CCar car; // wrong, complier doesn't know how to init car.tyre.
+    return 0;
+}
+```
+
+constructor execution order:
+1. member object's constructor(The order of member objects is the same as the order defined in the enclosing class)
+2. enclosing class object's constructor
+
+destructor execution order:
+1. enclosing class object's 
+2. member object's
+
+# Const Plus 
+## const object 
+```cpp
+const object obj;
+```
+## const member function
+you can't modify member datas(except static member datas) and call other non-const member function(except static) within const member function
+```cpp
+class Sample {
+    public:
+        int value;
+        void GetValue() const;
+        void GetValue(); // Ok, this is overload 
+        void func() { }
+};
+void Sample::GetValue() {}
+void Sample::GetValue() const {
+    value = 0; // wrong
+    func(); // wrong
+}
+```
+
+# Friends
+
+## friend function
+```cpp
+class CCar;
+class CDriver {
+    public:
+        void ModifyCar(CCar *pCar);
+};
+class CCar {
+    private:
+        int price;
+    friend int MostExpensiveCar(CCar cars[], int total); // Not member function of this class, but the function can use any member of this class.
+    friend void CDriver::ModifyCar(CCar *pCar);
+};
+void CDriver::ModifyCar(CCar *pCar) {
+    pCar->price += 1000;
+}
+int MostExpensiveCar(CCar cars[], int total) {
+    int tmpMax = -1;
+    for (int i = 0; i < total; i++) {
+        if (cars[i].price > tmpMax) {
+            tmpMax = cars[i].price;
+        }
+    }
+    return tmpMax;
+}
+```
+## friend class
+```cpp
+class CCar {
+    private:
+        int price;
+    friend class CDriver; //  
+};
+class CDriver {
+    CCar myCar;
+    public:    
+        void ModifyCar() {
+            myCar.price += 1000;
+        }
+};
+```
+friend class can't be passed and extended
+
+# Operator Overload 
+```cpp
+class Complex {
+    public:
+    double real, imag;
+    Complex(double r = 0.0, double i = 0.0):real(r), imag(i) {}
+    Complex operator-(const Complex &c);
+};
+Complex operator+(const Complex &a, const Complex &b) {
+    return Complex(a.real+b.real, a.imag+b.imag);
+}
+Complex Complex::operator-(const Complex &c) {
+    return Complex(real - c.real, imag - c.imag);
+}
+```
+# Assignment operator overload
+
+**=** can only be overloaded to member function
+```cpp
+class String {
+    private:
+        char *str;
+    public:
+        String():str(new char[1]) {str[0] = 0;}
+        const char *c_str() {return str;}
+        String &operator=(const char *s); //1
+        String(String &s) {
+            str = new char[strlen(s.str) + 1];
+            strcpy(str, s.str);
+        }
+        ~String() {delete[] str;}
+};
+String &String::operator=(const char *s) {
+    if (this == s) 
+        return *this;    
+    delete[] str;
+    str = new char[strlen(s) + 1];
+    strcpy(str, s);
+    return *this;
+}
+int main() {
+    String s;
+    s = "Good Luck"; // Ok
+    String s2 = "hello"; // Wrong, this is init not assignment
+    return 0;
+}
+```
+confusion:
+```cpp
+String S1, S2;
+S1 = "this";
+S2 = "that";
+S1 = S2; // terrible operation if without overloading. 3 reasons.
+s = s; // will be wrong without overloading
+a = b = c;
+(a = b) = c;
