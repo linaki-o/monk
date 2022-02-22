@@ -496,13 +496,21 @@ class Complex {
     public:
     double real, imag;
     Complex(double r = 0.0, double i = 0.0):real(r), imag(i) {}
-    Complex operator-(const Complex &c);
+    Complex operator -(const Complex &c);
+    Complex operator +(double r); // c + 5
+    friend Complex operator +(double r, const Complex &c);
 };
-Complex operator+(const Complex &a, const Complex &b) {
+Complex operator +(const Complex &a, const Complex &b) {
     return Complex(a.real+b.real, a.imag+b.imag);
 }
-Complex Complex::operator-(const Complex &c) {
+Complex Complex::operator -(const Complex &c) {
     return Complex(real - c.real, imag - c.imag);
+}
+Complex operator +(double r, const Complex &c) {
+    return Complex(c.real + r, c.imag);
+}
+Complex Complex::operator +(double r) {
+    return Complex(this.real + r, this.imag);
 }
 ```
 # Assignment operator overload
@@ -515,14 +523,14 @@ class String {
     public:
         String():str(new char[1]) {str[0] = 0;}
         const char *c_str() {return str;}
-        String &operator=(const char *s); //1
+        String & operator =(const char *s); //1
         String(String &s) {
             str = new char[strlen(s.str) + 1];
             strcpy(str, s.str);
         }
         ~String() {delete[] str;}
 };
-String &String::operator=(const char *s) {
+String &String::operator =(const char *s) {
     if (this == s) 
         return *this;    
     delete[] str;
@@ -546,3 +554,418 @@ S1 = S2; // terrible operation if without overloading. 3 reasons.
 s = s; // will be wrong without overloading
 a = b = c;
 (a = b) = c;
+
+# Combination
+```cpp
+class CArray {
+    int *ptr;
+    int size;
+    int length;
+    public:
+        CArray(int s = 0);
+        CArray(CArray &a);
+        ~CArray();
+        int & operator [](int i);
+        CArray & operator =(const CArray &a);
+        void push_back(int i);
+        int length();
+};
+CArray::CArray(int s):size(s) {
+    if (!s) {
+        ptr = NULL;
+        length = 0;
+    } else {
+        ptr = new int[s];
+        length = 0;
+    }
+}
+CArray::CArray(CArray &a) {
+    if (!a.size) {
+        ptr = NULL;
+        size = 0;
+        lenght = 0;
+        return ;
+    }
+    ptr = new int[a.size];
+    memcpy(ptr, a.ptr, a.size * sizeof(int));
+    size = a.size;
+    length = a.length;
+}
+CArray::~CArray() {
+    if (ptr) {
+        delete[] ptr;
+    }
+}
+int &CArray::operator [](int i) {
+    if (i >= 0 && i < length && ptr) {
+        return ptr[i];
+    } else {
+        cout << "ERROR" << endl;
+        return NULL;
+    }
+}
+CArray &CArray::operator =(CArray &a) {
+    if (ptr == a.ptr) 
+        return *this;
+    if (!a.size) {
+        if (ptr)
+            delete[] ptr;    
+        ptr = NULL;
+        size = 0;
+        length = 0;
+        return *this;
+    }
+    if (size < a.size) {
+        if (ptr)
+            delete[] ptr;
+        ptr = new int[a.size];
+        memcpy(ptr, a.ptr, a.size * sizeof(int));
+        size = a.size;
+        length = a.length;
+        return *this;
+    }
+}
+void CArray::push_back(int i) {
+    if (i >= 0 && ptr) {
+        if (length++ > size) {
+            int nsize = size + size / 2;
+            int *nptr = new int(nsize);
+            memcpy(nptr, ptr, size);
+            delete[] ptr;
+            ptr = nptr;
+            size = nsize;
+        } else {
+            ptr[length] = i;
+        }
+    } else {
+        ptr = new int[1];
+        ptr[size++] = i;
+    }
+}
+
+int CArray::length() {
+    return length;
+}
+```
+# Input and Output operator overloading
+```cpp
+class Complex {
+    double real, imag;
+    public:
+        Complex(double r = 0, double i = 0):real(r), imag(i){}
+        friend ostream & operator <<(ostream &os, const Complex &c);
+        friend istream & operator >>(istream &is, Complex &c);
+};
+ostream & operator <<(ostream &os, const Complex &c) {
+    os << c.real << "+" << c.imag << "i";
+    return os;
+}
+istream & operator >>(istream &is, Complex &c) {
+    string s;
+    is >> s;
+    int pos = s.find("+", 0);
+    string sTmp = s.substr(0, pos);
+    c.real = atof(sTmp.c_str());
+    sTmp = s.substr(pos+1, s.length()-pos-2);
+    c.imag = atof(sTmp.c_str());
+    return is;
+}
+```
+
+# Type conversion operator overloading
+```cpp
+class Complex {
+    double real, imag;
+    public:
+        Complex(double r = 0, double i = 0):real(r), imag(i) {}
+        operator double() {
+            return real;
+        }
+};
+int main() {
+    Complex c(1.2, 3.4);
+    cout << (double)c << endl; // 1.2
+    double n = 2 + c;
+    cout << n; // 3.2
+}
+```
+# Overloading of the self-increment operator self-subtraction operator
+```cpp
+class CDemo {
+    int n;
+    public:
+        CDemo(int i = 0):n(i){}
+        CDemo & operator ++();//prefix
+        CDemo operator ++(int);// suffix, suffix need an extra parameter, but it doesn't do anything
+        operator int() {
+            return n;
+        }
+        friend CDemo & operator --(CDemo &);
+        friend CDemo operator -- (CDemo &, int);
+};
+CDemo & CDemo::operator ++ () {
+    ++n;
+    return *this; // (++i) = 3; is ok
+}
+CDemo CDemo::operator ++ (int i) {
+    CDemo tmp(*this);
+    n++;
+    return tmp; // (i++) = 3; is wrong
+}
+CDemo & operator -- (CDemo &d) {
+    d.n--;
+    return d;
+}
+CDemo operator -- (CDemo &d, int i) {
+    CDemo tmp(d);
+    d.n--;
+    return tmp;
+}
+```
+
+note:
+
+1. No new operators are allowed to be defined
+2. Operator overloading cannot change operator precedence
+3. ".", ".*", "::", "?:", "sizeof" cannot be overloaded
+4. "()", "[]", "->" and "=" must be overloaded as member function.
+
+# Extend
+```cpp
+class CStudent {
+    string sName;
+    int nAge;
+    public:
+        bool isExcellent() {}
+        void setName(const string &name) {
+            sName = name;
+        }
+};
+class CUndergraduateStudent:public CStudent {
+    private:
+        int nDepartment;
+    public:
+        bool isExcellent() {...} // override
+}
+```
+
+# Inherited relationships and Compound relationship
+```cpp
+// ========bad
+class CDog;
+class CMaster {
+    CDog dogs[10];
+};
+class CDog {
+    CMaster m;
+}; // Loop Definition
+// ========bad
+class CDog;
+class CMaster {
+    CDog *dogs[10];
+};
+class CDog {
+    CMaster m;
+};
+// ========bad
+class CMaster;
+class CDog {
+    CMaster *pm;
+};
+class CMaster {
+    CDog dogs[10];
+};
+// ========good
+class CMaster;
+class CDog {
+    CMaster *pm;
+};
+class CMaster {
+    CDog *dogs[10];
+};
+``` 
+
+# Access base class 
+```cpp
+class base {
+    int j;
+    public:
+        int i;
+        void func();    
+};
+class derived:public base {
+    public:
+        void access();
+        void func();    
+}
+void derived::access() {
+    j = 5; // subclass can't access the private data of base class
+    func(); // subclass
+    base::func(); // base class
+}
+```
+
+# constructor of subclass
+```cpp
+class Bug { 
+    int nLegs;
+    int nColor;
+    public:
+        int nType;
+        Bug(int legs, int color):nLegs(legs), nColor(color){}
+        void printBug() {}
+};
+class Skill {
+    public:
+        Skill(int n) {}
+}
+class FlyBug:public Bug {
+    int nWings;
+    Skill sk1, sk2;
+    public:
+        FlyBug(int legs, int color, int wings);
+};
+FlyBug::FlyBug(int legs, int color, int wings):Bug(legs, color), sk1(5), sk2(color) {
+    nWings = wings;
+} // If the base class constructor is not explicitly called, the base class's parameterless constructor is used by default
+
+/* 
+constructor call order:
+1. Bug
+2. Skill
+3. FlyBug
+*/
+```
+# Public extend rules
+```cpp
+class base {};
+class derived:public base {};
+base b;
+derived d;
+// operations below is allowed
+b = d;
+base &br = d;
+base *pb = &d;
+```
+# Virtual function and Polymorphic
+
+Polymorphic representation:
+
+1. 
+    ```cpp
+    class CBase {
+        public:
+            virtual void SomeVirtualFunction() {
+                cout << "base class" << endl;
+            }    
+    };
+    class CDerived:public CBase {
+        public:
+            virtual void SomeVirtualFunction() {
+                cout << "subclass" << endl;
+            }
+    };
+    int main() {
+        CDerived ODerived;
+        CBase *p = &ODerived;
+        p->SomeVirtualFunction(); // print "base class" or "subclass" depends on which class the pointer points to. it has been decided during compiling.
+    } 
+    ```
+
+2.
+    ```cpp
+    class CBase {
+        public:
+            virtual void SomeVirtualFunction() {
+                cout << "base class" << endl;
+            }    
+    };
+    class CDerived:public CBase {
+        public:
+            virtual void SomeVirtualFunction() {
+                cout << "subclass" << endl;
+            }
+    };
+    int main() {
+        CDerived ODerived;
+        CBase &r = ODerived;
+        r.SomeVirtualFunction(); // Same as the example above 
+    }
+    ```
+**Polymorphic can improve program expandability**
+
+# Polymorphic Plus
+```cpp
+class Base {
+    public:
+        void fun1() {fun2();}
+        virtual void fun2() {
+            cout << "Base" << endl;
+        }
+};
+class Derived:public Base {
+    public:
+        virtual void fun2() {
+            cout << "Derived" << endl;
+        }
+};
+int main() {
+    Derived d;
+    Base *pBase = &d;
+    pBase->fun1(); // print "Derived"
+    return 0;
+}
+```
+
+**Calling virtual functions in constructors and destructors is not polymorphism**
+```cpp
+class myClass {
+    public:
+        virtual void hello() {
+            cout << "hello from myclass" << endl;
+        }
+        virtual void bye() {
+            cout << "bye from myclass" << endl;
+        }
+};
+class son:public myClass {
+    public:
+        void hello() {
+            cout << "hello from son" << endl;
+        }    
+        son() {hello();}
+        ~son() {bye();}
+};
+class grandson:public son {
+    public:
+        virtual void hello() {
+            cout << "hello from grandson" << endl;
+        }
+        virtual void bye() {
+            cout << "bye from grandson" << endl;
+        }
+        grandson() {
+            cout << "grandson" << endl;
+        }
+        ~grandson() {
+            cout << "destructing grandson" << endl;
+        }
+};
+int main() {
+    grandson gson;
+    son *pson;
+    pson = &gson;
+    pson->hello();
+    return 0;
+}
+
+/*
+print:
+hello from son
+grandson
+hello from grandson
+destructing grandson
+bye from myclass
+*/
+```
+
