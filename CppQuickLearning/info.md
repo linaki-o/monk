@@ -969,3 +969,273 @@ bye from myclass
 */
 ```
 
+# Virtual destructor
+
+deleting  base class pointer will only call the base class destructor without virtual destructor
+```cpp
+class son {
+    public:
+        virtual ~son() {
+            cout << "bye from son" << endl;
+        }    
+};
+class grandson:public son {
+    public:
+        ~grandson() {
+            cout << "bye from grandson" << endl;
+        }    
+};
+int main() {
+    son *pson;
+    pson = new grandson();
+    delete pson;
+    return 0;
+}
+
+/*
+output:
+bye from grandson
+bye from son
+*/
+```
+when base class's member function is virtual, automatically, the subclass's member function is virtual too.
+
+**note: you can't make constructor virtual**
+
+# Pure virtual functions  
+```cpp
+virtual void func() = 0;
+```
+# Abstract class
+A class that contains pure virtual functions is called an abstract class
+
+```cpp
+// given A is virtual class
+A a; // wrong
+A *pa; // ok
+pa = new A; // wrong
+```
+
+you can call pure virtual functions in member functions of abstract class, except constructor and destructor
+
+if a subclass extended from abstract class, it is also abstract unless all pure virtual functions is implemented.
+
+# IO
+<img src="img/io.png">
+
+several objects:
+- cin
+    ```cpp
+    freopen("text.txt", "r", stdin);
+    ```
+- cout
+    ```cpp
+    freopen("text.txt", "w", stdout);
+    ```
+- cerr
+- clog
+----
+Determine if the input stream is finished:
+```cpp
+while(cin>>i) {
+    // ...
+}
+```
+
+istream:
+- istream & getline(char *buf, int bufSize);
+- istream & getline(char *buf, int bufSize, char delim);
+
+    `two of these functions will add '\0' in the end`
+- bool eof(); // determine whether the input stream is finished
+- int peek(); // return the next character, but don't delete it from the input stream
+- istream & putback(char c);
+- istream & ignore(int nCount = 1, int delim = EOF); // delete nCount characters from input stream. finish when encounter EOF.
+
+
+# Output format
+```cpp
+#include <iostream>
+#include <iomanip>
+using namespace std;
+int main() {
+        int n = 141;
+        cout << hex << n << " " << dec << n << " " << oct << n << endl;
+
+        double x = 1234567.89, y = 12.34567;
+        cout << setprecision(5) << x << " " << y << " " << endl;
+
+        cout << fixed << setprecision(5) << x << " " << y << endl;
+
+        cout << scientific << setprecision(5) << x << " " << y << endl;
+
+        cout << showpos << fixed << setw(12) << setfill('*') << 12.1 << endl;
+
+        cout << noshowpos << setw(12) << left << 12.1 << endl;
+
+        cout << setw(12) << right << 12.1 << endl;
+
+        cout << setw(12) << internal << -12.1 << endl;
+
+        cout << 12.1 << endl;
+        return 0;
+}
+/* 
+output:
+8d 141 215
+1.2346e+06 12.346 
+1234567.89000 12.34567
+1.23457e+06 1.23457e+01
+***+12.10000
+12.10000****
+****12.10000
+-***12.10000
+12.10000
+*/
+```
+ 
+Customization:
+```cpp
+ostream & tab(ostream &output) {
+    return output << '\t';
+}
+cout << "aa" << tab << "bb" << endl;
+/*
+output:
+aa  bb
+*/
+
+/* 
+function prototype:
+ostream & operator <<(ostream & (*p) (ostream &));
+and *this as parameter in iostream
+*/
+```
+
+# File
+## creat a file
+```cpp
+#include <fstream>
+ofstream outFile("clients.dat", ios::out|ios::binary);
+ofstream outfile2;
+outfile2.open("test.out", ios::out|ios::binary);
+if (!outfile2) {
+    cout << "File open error" << endl;
+}
+```
+## file read and write pointers
+write pointer:
+```cpp
+ofstream fout("a1.out", ios::app);
+long location = fout.tellp(); // obtain the position of pointer
+location = 10;
+fout.seekp(location); // move the pointer for next 10 bytes 
+fout.seekp(location, ios::beg); // move from the file head
+fout.seekp(location, ios::cur); // move from the current place
+fout.seekp(location, ios::end);
+```
+
+read pointer:
+```cpp
+ifstream fin("a1.in", ios::ate); // open a file whose point in the end
+long location = fin.tellg(); // obtain the gosition of gointer
+location = 10L;
+fin.seekg(location); // move the gointer for next 10 bytes 
+fin.seekg(location, ios::beg); // move from the file head
+fin.seekg(location, ios::cur); // move from the current place
+fin.seekg(location, ios::end);
+```
+
+
+# Binary files
+## write and read
+```cpp
+istream & read(char *s, long n);
+istream & write(const char *s, long n);
+```
+## the difference between a binary file and a text file
+Line break symbols:
+- unix, linux: '\n'
+- windows: '\r\n'
+- mac os: '\r'
+
+In Unix/Linux, It makes no difference if you use ios::binary.
+
+but in windows without ios::binary, when reading, all '\r\n' will be processed into a '\n', on the other side, when writing, a single '\n' will be processed into a '\r\n'.
+
+# Template
+## function
+define:
+```cpp
+template <class T>
+void Swap(T &x, T &y) {
+    T tmp = x;
+    x = y;
+    y = tmp;
+}
+// ===============
+T Inc(T n) {
+    return 1 + n;
+}
+int main() {
+    cout << Inc<double>(4) / 2; // print 2.5
+    return 0;
+}
+```
+overload:
+```cpp
+template<class T1, class T2>
+void print(T1 arg1, T2 arg2) {
+    // ...
+}
+template<class T>
+void print(T1 arg1, T2 arg2) {
+    // ...
+}
+template<class T1, class T2>
+void print(T1 arg1, T1 arg2) {
+    // ...
+}
+```
+Function templates and function call order:
+1. Common functions with matching parameters
+2. Template functions with exactly matching parameters
+3. Common functions that can match after automatic type conversion of real parameters
+
+```cpp
+#include <iostream>
+using namespace std;
+template <class T>
+T Max(T a, T b) {
+        cout << "TemplateMax" << endl;
+        return 0;
+}
+template <class T1, class T2>
+T1 Max(T1 a, T2 b) {
+        cout << "TemplateMax2" << endl;
+        return 0;
+}
+double Max(double a, double b) {
+        cout << "MyMax" << endl;
+        return 0;
+}
+int main() {
+        int i = 4, j = 5;
+        Max(1.2, 3.4);
+        Max(i, j);
+        Max(1.2, 3);
+        return 0;
+}
+
+/*
+output:
+MyMax
+TemplateMax
+TemplateMax2
+*/
+```
+
+No automatic type conversion when matching template functions
+```cpp
+myFunction(5, 8.4); // error
+```

@@ -312,4 +312,39 @@ Integer division on most machines is even slower than integer multiplication— 
 
 **Right shift always rounds down**
 
+-----
 By adding a bias before the right shift, the negative result is rounded toward zero
+    <img src="img/roundTo0.png">
+    <img src="img/round20D.png">
+
+**(x<0 ? x+(1<<k)-1 : x) >> k will compute the value x/2^k**
+
+## Floating Point
+A floating-point representation encodes rational numbers of the form **V = x × 2^y**.
+
+`p194 2.46`
+
+> IEEE Floating-Point Representation
+
+The IEEE floating-point standard represents a number in a form **V = (−1)^s × M × 2^E**.
+    <img src="img/float1.png">
+
+- The single sign bit s directly encodes the sign s
+- The k-bit exponent field exp = ek−1 ... e1e0 encodes the exponent E
+- The n-bit fraction field frac = fn−1 ... f1f0 encodes the significand M, but the value encoded also depends on whether or not the exponent field equals 0.
+
+----
+The value encoded by a given bit representation can be divided into three different cases
+
+1. Denormalized Values
+    ```
+    When the exponent field is all zeros, the represented number is in denormalized form.
+
+    E = 1 − Bias;
+    
+    they provide a way to represent numeric value 0
+
+    represent numbers that are very close to 0.0
+    ```
+2. Normalized Values
+p149
