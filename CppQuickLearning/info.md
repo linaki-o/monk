@@ -1239,3 +1239,176 @@ No automatic type conversion when matching template functions
 ```cpp
 myFunction(5, 8.4); // error
 ```
+
+## class
+```cpp
+template<class T1, class T2>
+class Pair {
+    public:
+        T1 key;
+        T2 value;
+        Pair (T1 k, T2 v):key(k), value(v) {}
+        bool operator <(const Pair<T1, T2> &p) const;
+};
+template<class T1, class T2>
+bool Pair<T1, T2>::operator <(const Pair<T1, T2> &p) {
+    return key < p.key;
+}
+int main() {
+    Pair<string, int> student("Tom", 19);
+    cout << student.key << " " << student.value;
+    return 0;
+}
+```
+note:
+```cpp
+Pair<string, int> *p;
+Pair<string, double> a;
+p = &a; // wrong
+```
+
+function template be one of class template's member:
+```cpp
+#include <iostream>
+using namespace std;
+template <class T>
+class A {
+        public:
+                template <class T2>
+                void Func(T2 t) {
+                        cout << t;
+                }
+};
+int main() {
+        A<int> a;
+        a.Func('K');
+        a.Func("hello");
+        return 0;
+}
+```
+
+Non-type parameters:
+```cpp
+#include <iostream>
+using namespace std;
+template <class T, int size>
+class CArray {
+        T array[size];
+        public:
+                void Print() {
+                        for (int i = 0; i < size; ++i)
+                                cout << array[i] << endl;
+                }
+};
+CArray<double 40> a2;
+CArray<int 50> a3;
+```
+## extend
+1. 
+    ```cpp
+    template <class T1, class T2>
+    class A {
+        T1 v1;
+        T2 v2;
+    };
+
+    template <class T1, class T2>
+    class B:public A<T2, T1> {
+        T1 v3;
+        T2 v4;
+    };
+    ```
+2. 
+    ```cpp
+    template <class T1, class T2>
+    class A {
+        T1 v1;
+        T2 v2;
+    };
+
+    template <class T>
+    class B:public A<int, double> {
+        T v;
+    };
+    ```
+3. 
+    ```cpp
+    class A {
+        int v1;
+    };
+    template <class T>
+    class B:public A {
+        T v;
+    };
+    ```
+4.
+    ```cpp
+    template <class T>
+    class A {
+        T v1;
+        int n;
+    }; 
+    class B:public A<int> {
+        double v;
+    };
+    ```
+
+## friend
+## static
+```cpp
+#include <iostream>
+using namespace std;
+template <class T>
+class A {
+        private:
+                static int count;
+        public:
+                A() { count++;}
+                ~A() { count--;}
+                A(A &) { count++;}
+                static void PrintCount() {
+                        cout << count << endl;
+                }
+};
+template<> int A<int>::count = 0;
+template<> int A<double>::count = 0;
+int main() {
+        A<int> ia;
+        A<double> da;
+        ia.PrintCount();
+        da.PrintCount();
+        return 0;
+}
+```
+# String
+**typedef basic_string`<char>` string**
+- .length()
+- getline(cin, s)
+- .assign()
+- .at()
+- .append()
+- .size()
+- .substr()
+- .find()
+- .rfind()
+- .find_first_of()
+- .find_last_of()
+- .find_first_not_of()
+- .erase()
+- .replace()
+- .insert()
+- .c_str()
+- .data()
+- istringstream >> s
+- ostringstream << "linaki"
+
+# STL
+- Containers: class template
+- Iterators: pointer
+- Algorithm: function template
+
+- Sequential containers: vector, deque, list
+- Associated containers: set, multiset, map, multimap
+- Container adapter: stack, queue, priority_queue
+
+**note: you had better overload "==", ">"... when a class is put into container**
