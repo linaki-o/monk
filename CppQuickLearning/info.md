@@ -1412,3 +1412,213 @@ int main() {
 - Container adapter: stack, queue, priority_queue
 
 **note: you had better overload "==", ">"... when a class is put into container**
+## iterators
+```cpp
+#include <vector>
+#include <iostream>
+using namespace std;
+int main() {
+        vector<int> v;
+        v.push_back(1);
+        v.push_back(2);
+        v.push_back(3);
+        v.push_back(4);
+        vector<int>::const_iterator i; // define const iterator
+        for (i = v.begin(); i != v.end(); ++i)
+                cout << *i << ",";
+        cout << endl;
+        vector<int>::reverse_iterator r;
+        for (r = v.rbegin(); r != v.rend(); r++)
+                cout << *r << ",";
+        cout << endl;
+        vector<int>::iterator j;
+        for (j = v.begin(); j != v.end(); j++)
+                *j = 100;
+        for (i = v.begin(); i != v.end(); i++)
+                cout << *i << ",";
+        return 0;
+}
+
+```
+Two-way iterators p q:
+- ++p, p++
+- --p, p--
+- *p
+- p = q
+- p == q, p != q
+
+list, set/multiset, map/multimap 
+
+----
+Random access iterator p q:
+- p += i
+- p -= i
+- p + i
+- p - i
+- p[i]
+- p < q, p >= q...
+
+vector, deque
+
+----
+don't support iterator:
+
+stack, queue, priority_queue
+
+## algorithm
+- find()
+    ```cpp
+    template< class InputIterator, class T >
+    InputIterator find( InputIterator first, InputIterator last,const T& value );
+    /* 
+    [first, last)
+
+    Judge by the == operator
+    
+    iterator to the first element satisfying the condition or last if no such element is found.
+
+- binary_search()
+    ```cpp
+    #include <iostream>
+    #include <algorithm>
+    using namespace std;
+    class A {
+            int v;
+            public:
+                    A(int n):v(n) {}
+                    bool operator <(const A &a2) const {
+                            cout << v << "<" << a2.v << "?" << endl;
+                            return false;
+                    }
+                    bool operator ==(const A &a2) const {
+                            cout << v << "==" << a2.v << "?" << endl;
+                            return v == a2.v;
+                    }
+    };
+    int main() {
+            A a[] = {A(1), A(2), A(3), A(4), A(5)};
+            cout << binary_search(a, a+4, A(9));
+            return 0;
+    }
+    ```
+## vector
+```cpp
+vector<vector<int> > v(3);
+```
+## dequeue
+## list
+- .sort() 
+    ```cpp    
+    void sort();
+    
+    template< class Compare >
+    void sort( Compare comp );
+    /*
+    comparison function which returns ​true if the first argument is less than the second.
+    */
+```cpp
+#include <list>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+class A {
+        private:
+                int n;
+        public:
+                A(int n_) {n = n_;}
+                friend bool operator <(const A & a1, const A & a2);
+                friend ostream & operator <<(ostream & o, const A & a);
+};
+bool operator <(const A & a1, const A & a2) {
+        return a1.n < a2.n;
+}
+ostream & operator <<(ostream & o, const A & a) {
+        o << a.n;
+        return o;
+}
+
+template<class T>
+void PrintList(const list<T> & lst) {
+        typename list<T>::const_iterator i;
+        for (i = lst.begin(); i != lst.end(); i++)
+                cout << *i << ",";
+}
+
+```
+## function object
+If a class overloads the () operator, the class is a function object
+
+**accumulate**:
+```cpp
+// First version
+template<class InputIterator, class T>
+T accumulate(InputIterator first, InputIterator last, T value)
+{
+    for (; first != last; ++first) {
+        value = value + *first;
+    }
+    return value;
+}
+// Second version
+template<class InputIterator, class T, class BinaryOperation>
+T accumulate(InputIterator first, InputIterator last, T value, 
+             BinaryOperation op)
+{
+    for (; first != last; ++first) {
+        value = op(value, *first); // op can be function, function pointer or function object
+    }
+    return value;
+}
+
+accumulate(v.begin(), v.end(), 0, SumPowers<int>(4));
+```
+
+Function objects in <functional>
+
+bigger or smaller in STL:
+- **x < y == op(x, y) return true == y > x**
+- **(x == y return true) == (x < y return false && y < x return false)**
+
+## set and multiset
+**pair:**
+```cpp
+template<
+    class T1,
+    class T2
+
+> struct pair;
+```
+**multiset:**
+```cpp
+template<
+    class Key,
+    class Compare = std::less<Key>,
+    class Allocator = std::allocator<Key>
+
+> class multiset;
+
+
+template< class T >
+struct less {
+    bool operator()(const T &lhs, const T &rhs) const 
+    {
+        return lhs < rhs;
+    }
+    ...
+}
+```
+**set:**
+```cpp
+template<
+    class Key,
+    class Compare = std::less<Key>,
+    class Allocator = std::allocator<Key>
+
+> class set;
+// Set is an associative container that contains a sorted set of unique objects of type Key
+```
+
+
+
+
+
