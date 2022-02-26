@@ -1465,42 +1465,7 @@ don't support iterator:
 
 stack, queue, priority_queue
 
-## algorithm
-- find()
-    ```cpp
-    template< class InputIterator, class T >
-    InputIterator find( InputIterator first, InputIterator last,const T& value );
-    /* 
-    [first, last)
 
-    Judge by the == operator
-    
-    iterator to the first element satisfying the condition or last if no such element is found.
-
-- binary_search()
-    ```cpp
-    #include <iostream>
-    #include <algorithm>
-    using namespace std;
-    class A {
-            int v;
-            public:
-                    A(int n):v(n) {}
-                    bool operator <(const A &a2) const {
-                            cout << v << "<" << a2.v << "?" << endl;
-                            return false;
-                    }
-                    bool operator ==(const A &a2) const {
-                            cout << v << "==" << a2.v << "?" << endl;
-                            return v == a2.v;
-                    }
-    };
-    int main() {
-            A a[] = {A(1), A(2), A(3), A(4), A(5)};
-            cout << binary_search(a, a+4, A(9));
-            return 0;
-    }
-    ```
 ## vector
 ```cpp
 vector<vector<int> > v(3);
@@ -1618,7 +1583,157 @@ template<
 // Set is an associative container that contains a sorted set of unique objects of type Key
 ```
 
+## multimap and map
+**multimap:**
+**map:**
+Map is an associative container that contains a sorted list of unique key-value pairs.
+```cpp
 
+T& operator[]( const Key& key );
+	
+T& operator[]( Key&& key );
+```
+
+## stack and queue and priority_queue
+## algorithm
+> Non-modifying sequence operations
+
+**Time Complexity: O(n)**
+
+Applicable for Sequential containers, Associated containers
+
+- Minimum/maximum operations
+- find()    
+    ```cpp
+    template< class InputIterator, class T >
+    InputIterator find( InputIterator first,    InputIterator last, const T& value );
+
+> Modifying sequence operations
+
+Best not to use on associated containers
+- copy
+    ```cpp
+    template<class InputIterator, class OutputIterator>
+    OutputIterator copy(InputIterator first, InputIterator last, OutputIterator d_first){
+    while (first != last) {
+        *d_first++ = *first++;
+    }
+    return d_first;
+    }
+    ```
+
+
+> value delete
+
+**Time Complexity: O(n)**
+
+Best not to use on associated containers
+- remove()
+    ```cpp
+    // removes elements satisfying specific criteria    
+    ```
+- unique()
+    ```cpp
+    // removes consecutive duplicate elements in a range
+    ```
+
+> order change
+
+**Time Complexity: O(n)**
+
+Best not to use on associated containers
+- reverse
+    ```cpp
+    // reverses the order elements in a range    
+    ```
+- next_permutation
+    ```cpp
+    // generates the next greater lexicographic permutation of a range of elements
+    ```
+- prev_permutation
+    ```cpp
+    // generates the next smaller lexicographic permutation of a range of elements
+    ```    
+- random_shuffle()
+    ```cpp
+    // randomly re-orders elements in a range
+    ```    
+
+> order sort
+
+**Time Complexity: O(nlog(n))**
+
+Best not to use on associated containers and list
+
+Requires random access iterator support
+- sort()
+
+
+> Ordered interval
+
+Best not to use on associated containers and list
+
+Requires random access iterator support
+
+The intervals to be manipulated need to be sorted from smallest to largest
+- binary_search()
+- lower_bound()
+- upper_bound()
+- equal_range()
+
+
+> Numerical
+
+> bitset
+
+
+
+
+- find()
+    ```cpp
+    template< class InputIterator, class T >
+    InputIterator find( InputIterator first, InputIterator last,const T& value );
+    /* 
+    [first, last)
+
+    Judge by the == operator
+    
+    iterator to the first element satisfying the condition or last if no such element is found.
+
+- binary_search()
+    ```cpp
+    #include <iostream>
+    #include <algorithm>
+    using namespace std;
+    class A {
+            int v;
+            public:
+                    A(int n):v(n) {}
+                    bool operator <(const A &a2) const {
+                            cout << v << "<" << a2.v << "?" << endl;
+                            return false;
+                    }
+                    bool operator ==(const A &a2) const {
+                            cout << v << "==" << a2.v << "?" << endl;
+                            return v == a2.v;
+                    }
+    };
+    int main() {
+            A a[] = {A(1), A(2), A(3), A(4), A(5)};
+            cout << binary_search(a, a+4, A(9));
+            return 0;
+    }
+    ```
+
+# C++11
+## initialization
+```cpp
+int arr[3]{1, 2, 3};
+vector<int> iv{1, 2, 3};
+map<int, string> mp{{1, "a"}, {2, "b"}};
+string str{"Hello World"};
+int *p = new int[20]{1, 2, 3};
+```
 
 
 
