@@ -342,9 +342,36 @@ The value encoded by a given bit representation can be divided into three differ
 
     E = 1 − Bias;
     
+    M = f
+    
     they provide a way to represent numeric value 0
 
     represent numbers that are very close to 0.0
     ```
 2. Normalized Values
-p149
+    ```
+    It occurs when the bit pattern of exp is neither all zeros (numeric value 0) nor all ones (numeric value 255 for single precision
+
+    E = e − Bias
+
+    e is the unsigned number having bit representation ek−1 ... e1e0 and Bias is a bias value equal to 2^k−1 − 1
+
+    M = 1 + f
+
+    M = 1.fn−1fn−2 ... f0
+
+    This
+    representation is a trick for getting an additional bit of precision for free, since we can always adjust the exponent E so that significand M is in the range 1 ≤ M < 2 (   assuming there is no overflow)    
+    ```
+3. Special Values
+    ```
+    A final category of values occurs when the exponent field is all ones.
+    ```
+<img src="img/float2.png">
+
+> Rounding
+
+The IEEE floating-point format defines four different rounding modes
+
+**Round-to-even (also called round-to-nearest) is the default mode**
+<img src="img/float_round.png">

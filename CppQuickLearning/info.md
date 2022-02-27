@@ -1733,7 +1733,70 @@ vector<int> iv{1, 2, 3};
 map<int, string> mp{{1, "a"}, {2, "b"}};
 string str{"Hello World"};
 int *p = new int[20]{1, 2, 3};
+// ==========
+class B {
+        public:
+                int m = 1234;
+                int n;
+};    
 ```
+
+## auto
+```cpp
+map<string, int, greater<string> > mp;
+for (auto i = mp.begin(); i != mp.end(); ++i) {
+        cout << i->first << "," << i->second
+;
+}  
+// =======
+template<class T1, class T2>
+auto add(T1 x, T2 y)-> decltype(x + y) {
+        return x + y;
+}       
+```
+## decltype
+```cpp
+int i;
+double t;
+struct A {
+        double x;
+}       
+const A *a = new A();
+
+decltype(a) x1; // x1 is A *
+decltype(i) x2; // x2 is int
+decltype(a) x3; // x3 is double
+decltype((a->x)) x4 = t; // x4 is double &
+```
+## shared_ptr
+## nullptr
+## new for
+```cpp
+include <iostream>
+#include <vector>
+using namespace std;
+class A {
+        public:
+
+                int n;
+                A(int i):n(i) {}
+};
+int main() {
+        int ary[] = {1, 2, 3, 4, 5};
+        for (int &e : ary)
+                e *= 10;
+        for (int e : ary)
+                cout << e << ",";
+        cout << endl;
+        vector<A> st(ary, ary+5);
+        for (auto &it : st)
+                it.n *= 10;
+        for (A it : st)
+                cout << it.n << ",";
+        return 0;
+}
+```
+
 
 
 
