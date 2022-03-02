@@ -1,11 +1,3 @@
--pedantic-errors 
--Wall -Weffc++ -Wextra -Wsign-conversion
-
--Werror
-
-
-
-
 # Reference "&"
 ```cpp
 int & r = n;
@@ -16,7 +8,7 @@ Now, r is considered an alias for n.
 
 Simple example:
 ```cpp
-void swap(int &a, int &b) {
+void swap(int& a, int& b) {
     int tmp;
     tmp = a;
     a = b;
@@ -26,12 +18,12 @@ swap(n1, n2);
 ```
 ## Constant references
 ```cpp
-const int &r = n;
+const int& r = n;
 ```
 You cannot modify the content of a constant reference
 ```cpp
 int i;
-cont int j;
+const int j;
 int &n = i;
 const int &r = n; // Ok
 int &k = r; // Wrong
@@ -1587,6 +1579,8 @@ template<
 **multimap:**
 **map:**
 Map is an associative container that contains a sorted list of unique key-value pairs.
+
+map's iterator is pointer of pair class
 ```cpp
 
 T& operator[]( const Key& key );
