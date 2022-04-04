@@ -3,23 +3,27 @@
 
 ## 摄像机/观察空间
 
+当我们讨论摄像机/观察空间(Camera/View Space)的时候，是在讨论以摄像机的视角作为场景原点时场景中所有的顶点坐标：观察矩阵把所有的世界坐标变换为相对于摄像机位置与方向的观察坐标
+<img src="img/camera_axes.png">
+
+
+**要定义一个摄像机，我们需要它在世界空间中的位置、观察的方向、一个指向它右测的向量以及一个指向它上方的向量。细心的读者可能已经注意到我们实际上创建了一个三个单位轴相互垂直的、以摄像机的位置为原点的坐标系。**
 ### 摄像机位置
 ```cpp
 glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
 ```
 
 ### 摄像机方向
-现在我们让摄像机指向场景原点：(0, 0, 0)。还记得如果将两个矢量相减，我们就能得到这两个矢量的差吗？用场景原点向量减去摄像机位置向量的结果就是摄像机的指向向量。由于我们知道摄像机指向z轴负方向，但我们希望方向向量(Direction Vector)指向摄像机的z轴正方向。如果我们交换相减的顺序，我们就会获得一个指向摄像机正z轴方向的向量：
+现在我们让摄像机指向场景原点：(0, 0, 0)。还记得如果将两个矢量相减，我们就能得到这两个矢量的差吗？**用场景原点向量减去摄像机位置向量的结果就是摄像机的指向向量。** 由于我们知道摄像机指向z轴负方向，但我们希望**方向向量(Direction Vector)指向摄像机的z轴正方向**。如果我们交换相减的顺序，我们就会获得一个指向摄像机正z轴方向的向量：
 ```cpp
 glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
 glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
 ```
-<img src="img/camera_axes.png">
 
 
 ### 右轴
 
-我们需要的另一个向量是一个**右向量(Right Vector)**，它代表摄像机空间的x轴的正方向。为获取右向量我们需要先使用一个小技巧：先定义一个**上向量(Up Vector)**。接下来把上向量和第二步得到的方向向量进行叉乘。两个向量叉乘的结果会同时垂直于两向量，因此我们会得到指向x轴正方向的那个向量（如果我们交换两个向量叉乘的顺序就会得到相反的指向x轴负方向的向量）：
+我们需要的另一个向量是一个**右向量(Right Vector)**，它代表摄像机空间的x轴的正方向。为获取右向量我们需要先使用一个小技巧：先定义一个**上向量(Up Vector)**。接下来把上向量和第二步得到的方向向量进行**叉乘。**两个向量叉乘的结果会同时垂直于两向量，因此我们会得到指向x轴正方向的那个向量（如果我们交换两个向量叉乘的顺序就会得到相反的指向x轴负方向的向量）：
 ```cpp
 glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f); 
 glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
@@ -31,11 +35,16 @@ glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
 glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
 ```
 
+http://en.wikipedia.org/wiki Gram%E2%80%93Schmidt_process
+
 ## Look At
 
-使用矩阵的好处之一是如果你使用3个相互垂直（或非线性）的轴定义了一个坐标空间，你可以用这3个轴外加一个平移向量来创建一个矩阵，并且你可以用这个矩阵乘以任何向量来将其变换到那个坐标空间
+**使用矩阵的好处之一是如果你使用3个相互垂直（或非线性）的轴定义了一个坐标空间，你可以用这3个轴外加一个平移向量来创建一个矩阵，并且你可以用这个矩阵乘以任何向量来将其变换到那个坐标空间**
 
 <img src="img/lookat.png">
+
+事实上，摄像机并没有移动，我们只是假定摄像机的位置，然后让物体顶点坐标根据其而变化
+
 
 
 
@@ -53,7 +62,7 @@ view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f),
 
 ```cpp
 glm::vec3 cameraPos   = glm::vec3(0.0f, 0.0f,  3.0f);
-glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
+glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f); // 方向向量
 glm::vec3 cameraUp    = glm::vec3(0.0f, 1.0f,  0.0f);
 view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
 // 方向是当前的位置加上我们刚刚定义的方向向量。
@@ -80,7 +89,7 @@ void processInput(GLFWwindow *window)
 
 根据配置的不同，有些人可能移动很快，而有些人会移动很慢。当你发布你的程序的时候，你必须确保它在所有硬件上移动速度都一样。
 
-图形程序和游戏通常会跟踪一个**时间差(Deltatime)**变量，它储存了渲染上一帧所用的时间。
+图形程序和游戏通常会跟踪一个**时间差(Deltatime)** 变量，它储存了渲染上一帧所用的时间。
 
 
 我们跟踪两个全局变量来计算出deltaTime值：
@@ -99,7 +108,7 @@ void processInput(GLFWwindow *window)
   ...
 }
 ```
-我们把所有速度都去乘以deltaTime值。结果就是，如果我们的deltaTime很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。
+我们把所有速度都去乘以deltaTime值。结果就是，**如果我们的deltaTime很大，就意味着上一帧的渲染花费了更多时间，所以这一帧的速度需要变得更高来平衡渲染所花去的时间。**
 
 
 ## 视角移动
@@ -140,6 +149,7 @@ direction.z = cos(glm::radians(pitch)) * sin(glm::radians(yaw));
 
 
 ### 鼠标输入
+偏航角和俯仰角是通过鼠标（或手柄）移动获得的，水平的移动影响偏航角，竖直的移动影响俯仰角。它的原理就是，储存上一帧鼠标的位置，在当前帧中我们当前计算鼠标位置与上一帧的位置相差多少。如果水平/竖直差别越大那么俯仰角或偏航角就改变越大，也就是摄像机需要移动更多的距离。
 
 
 首先我们要告诉GLFW，它应该隐藏光标，并捕捉(Capture)它。
@@ -206,7 +216,7 @@ if(firstMouse) // 这个bool变量初始时是设定为true的
 ```
 
 
-缩放
+### 缩放
 
 视野(Field of View)或fov定义了我们可以看到场景中多大的范围。当视野变小时，场景投影出来的空间就会减小，产生放大(Zoom In)了的感觉。我们会使用鼠标的滚轮来放大。与鼠标移动、键盘输入一样，我们需要一个鼠标滚轮的回调函数
 ```cpp
@@ -227,6 +237,46 @@ yoffset值代表我们竖直滚动的大小
 
 四元数摄像机: https://github.com/cybercser/OpenGL_3_3_Tutorial_Translation/blob/master/Tutorial%2017%20Rotations.md
 
+自制lookat函数
+```cpp
+// Custom implementation of the LookAt function
+glm::mat4 calculate_lookAt_matrix(glm::vec3 position, glm::vec3 target, glm::vec3 worldUp)
+{
+    // 1. Position = known
+    // 2. Calculate cameraDirection
+    glm::vec3 zaxis = glm::normalize(position - target);
+    // 3. Get positive right axis vector
+    glm::vec3 xaxis = glm::normalize(glm::cross(glm::normalize(worldUp), zaxis));
+    // 4. Calculate camera up vector
+    glm::vec3 yaxis = glm::cross(zaxis, xaxis);
+
+    // Create translation and rotation matrix
+    // In glm we access elements as mat[col][row] due to column-major layout
+    glm::mat4 translation = glm::mat4(1.0f); // Identity matrix by default
+    translation[3][0] = -position.x; // Third column, first row
+    translation[3][1] = -position.y;
+    translation[3][2] = -position.z;
+    glm::mat4 rotation = glm::mat4(1.0f);
+    rotation[0][0] = xaxis.x; // First column, first row
+    rotation[1][0] = xaxis.y;
+    rotation[2][0] = xaxis.z;
+    rotation[0][1] = yaxis.x; // First column, second row
+    rotation[1][1] = yaxis.y;
+    rotation[2][1] = yaxis.z;
+    rotation[0][2] = zaxis.x; // First column, third row
+    rotation[1][2] = zaxis.y;
+    rotation[2][2] = zaxis.z; 
+
+    // Return lookAt matrix as combination of translation and rotation matrix
+    return rotation * translation; // Remember to read from right to left (first translation then rotation)
+}
+
+
+// Don't forget to replace glm::lookAt with your own version
+// view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+view = calculate_lookAt_matrix(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+```
+
 ## 总结：
 - 顶点缓冲对象(Vertex Buffer Object)： 一个调用显存并存储所有顶点数据供显卡使用的缓冲对象。
 - 顶点数组对象(Vertex Array Object)： 存储缓冲区和顶点属性状态。
@@ -241,3 +291,5 @@ yoffset值代表我们竖直滚动的大小
 
 - LookAt矩阵： 一种特殊类型的观察矩阵，它创建了一个坐标系，其中所有坐标都根据从一个位置正在观察目标的用户旋转或者平移。
 - 欧拉角(Euler Angles)： 被定义为偏航角(Yaw)，俯仰角(Pitch)，和滚转角(Roll)从而允许我们通过这三个值构造任何3D方向。
+
+
