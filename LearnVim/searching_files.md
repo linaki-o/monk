@@ -56,6 +56,8 @@ Vim的vim搜索命令使用quickfix进行处理。要查看所有搜索结果，
 
 > 外置grep
 
+让我们谈谈外置grep。默认情况下，它使用终端命令grep。要想在app/controllers/目录中搜索字符串"lunch"，您可以这样做：
+
 ```
 :grep -R "lunch" app/controllers/
 ```
