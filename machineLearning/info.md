@@ -210,6 +210,40 @@ exitFlag =
 
 <img src="img/of2.png">
 
+> Regularization Cost function
+
+penalize and make some theta really small
+
+<img src="img/r1.png">
+
+**what if lambda is set to an extremely large value(perhaps for too large for our problem, say lambda = 10^10)** 
+
+<font color="red">under fit</font>
+
+<img src="img/r2.png">
+
+
+> Regularized linear regression
+
+**gradient descent**
+
+<img src="img/rl1.png">
+
+**Normal equation**
+
+<img src="img/rl2.png">
+
+**Non-invertibility(optional/advanced)**
+
+regularization also takes care of this for us
+
+<img src="img/rl3.png">
+
+> Regularized logistic regression
+
+<img src="img/rlr1.png">
+
+
 
 
 ## Unsupervised learning
