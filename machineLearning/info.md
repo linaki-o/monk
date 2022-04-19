@@ -256,4 +256,29 @@ break data set into some separate clusters
 
 ## Cocktail party problem
 
+## Neurons and the brain
+
+why we need Neural network? `much better way to learn complex nonlinear hypotheses, even when your input features space, even when n is large. 
+> Neural Networks representation
+
+
+<img src="img/nn.png">
+
+<img src="img/nn2.png">
+<img src="img/nn3.png">
+
+activation mean the value that is computed by and that is output by a specific
+
+> Forward propagation: Vectorized implementation
+
+<img src="img/fp1.png">
+
+> Non-linear classification example: XOR/XNOR
+
+**XNOR: NOT (x1 XOR x2)**
+
+<img src="img/exampleAnd.png">
+
+<img src="img/pit.png">
+
 # Types of Machine Learning
