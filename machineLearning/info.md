@@ -281,4 +281,84 @@ activation mean the value that is computed by and that is output by a specific
 
 <img src="img/pit.png">
 
+> Multiple output units: one-vs-all
+
+<img src="img/mou.png">
+
+> classification
+
+<img src="img/c6.png">
+
+> cost function
+
+<img src="img/cf6.png">
+
+> back propagation algorithm
+
+<img src="img/gc.png">
+
+<img src="img/ba.png">
+
+<img src="img/ba2.png">
+
+**Detail:**
+
+<img src="img/ba3.png">
+
+<img src="img/ba4.png">
+
+
+<img src="img/ba5.png">
+
+**delta are measure of how much would we like to change the neural network's weights(theta) in order to affect these intermediate values of the computation, so as to affect the final output that the neural network h of x and therefore affect the overall cost**
+
+> Unroll into vectors
+
+The parameters of Advanced optimization algorithms can only be vector
+
+<img src="img/unroll.png">
+
+```m
+thetaVec = [Theta1(:); Theta2(:); Theta3(:)];
+
+Theta1 = reshape(thetaVec(1:110), 10, 11);
+```
+
+> Gradient checking
+
+back prop may have subtle bugs
+
+<img src="img/gc2.png">
+
+```m
+for i = 1:n
+    thetaPlus = theta;
+    thetaPlus(i) = thetaPlus(i) + EPSILON;
+    thetaMinus = theta;
+    thetaMinus(i) = thetaMinus(i) - EPSILON;
+    gradApprox(i) = (J(thetaPlus) - J(thetaMinus)) / (2 * EPSILON);
+end;
+% check that gradApprox approximately equals to DVec
+```
+<img src="img/gc5.png">
+
+> Random initialization: Symmetry breaking
+
+<img src="img/ri.png">
+
+> Summary
+
+- pick a network architecture
+
+    <img src="img/archit.png">
+- Randomly initialize weights
+- Implement forward propagtion to get hypothesis function for ant example x
+- Implement code to compute cost function J(theta)
+- Implement backprop to compute partial derivatives
+- Use gradient checking to compare partial derivatives computed using backpropagation vs. using numerical estimate of gradient of cost function. Then disable gradient checking code.
+- Use gradient descent or advanced optimization method with backpropagation to try to minimize cost function J(non-convex) as a function of parameter theta
+
+> Confidence
+
+
 # Types of Machine Learning
