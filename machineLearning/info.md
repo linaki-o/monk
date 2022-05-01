@@ -98,6 +98,13 @@ make sure features are on a similar scale then gradient descents can converge mo
 
 > mean normalization
 
+当特征相差几个数量级时，首先进行特征缩放可以使梯度下降的收敛速度更快。
+
+标准差是衡量一个特定特征的数值范围有多大变化的一种方式（大多数数据点将位于平均值的±2个标准差内）。
+
+```m
+std 算标准差
+```
 <img src="img/mn1.png">
 
 > choice of features
@@ -214,6 +221,8 @@ exitFlag =
 
 penalize and make some theta really small
 
+<img src="img/v4.png">
+
 <img src="img/r1.png">
 
 **what if lambda is set to an extremely large value(perhaps for too large for our problem, say lambda = 10^10)** 
@@ -243,6 +252,8 @@ regularization also takes care of this for us
 
 <img src="img/rlr1.png">
 
+<img src="img/v5.png">
+
 
 
 
@@ -259,6 +270,10 @@ break data set into some separate clusters
 ## Neurons and the brain
 
 why we need Neural network? `much better way to learn complex nonlinear hypotheses, even when your input features space, even when n is large. 
+
+**However, logistic regression cannot form more complex hypotheses as it is only a linear classifier(You could add more features (such as polynomial features) to logistic regression, but that can be very expensive to train.)**
+
+**The neural network will be able to represent complex models that form non-linear hypotheses**
 > Neural Networks representation
 
 
@@ -362,3 +377,19 @@ end;
 
 
 # Types of Machine Learning
+
+# MATLAB指令
+
+Because of the way meshgrids work in the surf command, we need to transpose J_vals before calling surf, or else the axes will be flipped
+
+> randperm
+randperm - 整数的随机排列
+
+>  A(:, 2:end) will only return elements from the 2nd to last column of A
+
+>  logical arrays
+```m
+a = 1:10; % Create a and b
+b = 3;
+a == b % You should try different values of b here
+```
